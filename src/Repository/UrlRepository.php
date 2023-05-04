@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Url;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Utils\UrlUtils;
 
 /**
  * @extends ServiceEntityRepository<Url>
@@ -23,7 +24,8 @@ class UrlRepository extends ServiceEntityRepository
 
     public function save(Url $entity, bool $flush = false): void
     {
-        $entity->setHash(md5($entity->getUrl()));
+        $hash = UrlUtils::hashUrl($entity->getUrl());
+        $entity->setHash($hash);
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
@@ -38,6 +40,12 @@ class UrlRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findOneByUrl(string $url): ?Url
+    {
+        $hash = UrlUtils::hashUrl($url);
+        return $this->findOneBy(['hash' => $hash]);
     }
 
 //    /**

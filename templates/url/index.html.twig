@@ -4,6 +4,9 @@
 
 {% block body %}
 <style>
+.error {
+    color: red;
+}
 </style>
 
 <h1>Add a URL</h1>
@@ -13,5 +16,6 @@
 {{ form_widget(form.url) }}
 <button type="submit">Add</button>
 {{ form_end(form) }}
+<div class="error">{{ message }}</div>
 
 {% endblock %}

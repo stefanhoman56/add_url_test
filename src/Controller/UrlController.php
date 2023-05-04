@@ -19,16 +19,22 @@ class UrlController extends AbstractController
     {
         $url = new Url();
         $form = $this->createForm(UrlType::class, $url);
+        $message = '';
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $urlRepo->save($url);
-
-            return $this->redirectToRoute('index');
+            $existingUrl = $urlRepo->findOneByUrl($url); // Checking for existing url
+            if (!$existingUrl) {
+                $urlRepo->save($url, true);
+                return $this->redirectToRoute('index');
+            } else {
+                $message = 'The URL already exists! Please enter a different URL.';
+            }
         }
 
         return $this->render('url/index.html.twig', [
             'form' => $form->createView(),
+            'message' => $message,
         ]);
     }
 }
