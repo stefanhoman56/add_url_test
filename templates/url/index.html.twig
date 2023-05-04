@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}This is simple Url test!{% endblock %}
+
+{% block body %}
+<style>
+</style>
+
+<h1>Add a URL</h1>
+
+{{ form_start(form) }}
+{{ form_label(form.url, 'Url') }}
+{{ form_widget(form.url) }}
+<button type="submit">Add</button>
+{{ form_end(form) }}
+
+{% endblock %}
